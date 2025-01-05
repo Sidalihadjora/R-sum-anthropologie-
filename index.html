@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الاختراق الوهمي</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #121212;
+      color: white;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      position: relative;
+    }
+
+    button {
+      background: linear-gradient(45deg, #FF4500, #FF6347);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 20px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.3s, background 0.5s;
+      box-shadow: 0 0 15px rgba(255, 69, 0, 0.6);
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      background: linear-gradient(45deg, #FF6347, #FF4500);
+      box-shadow: 0 0 25px rgba(255, 69, 0, 0.8);
+    }
+
+    .message {
+      font-size: 28px;
+      margin-top: 20px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .glow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      animation: pulse 4s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(0);
+        opacity: 0;
+      }
+      50% {
+        transform: scale(1);
+        opacity: 0.5;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <button id="startButton">اضغط هنا</button>
+    <div class="message" id="message"></div>
+    <div class="glow" id="glowEffect"></div>
+  </div>
+
+  <script>
+    const startButton = document.getElementById('startButton');
+    const messageDiv = document.getElementById('message');
+    const glowEffect = document.getElementById('glowEffect');
+
+    // Add glowing circles
+    function addGlowingCircle() {
+      const circle = document.createElement('div');
+      circle.classList.add('circle');
+      circle.style.width = circle.style.height = `${Math.random() * 100 + 50}px`;
+      circle.style.background = `rgba(255, 69, 0, ${Math.random()})`;
+      circle.style.left = `${Math.random() * window.innerWidth}px`;
+      circle.style.top = `${Math.random() * window.innerHeight}px`;
+      glowEffect.appendChild(circle);
+      setTimeout(() => circle.remove(), 4000);
+    }
+
+    setInterval(addGlowingCircle, 300);
+
+    // Countdown logic with visual effects
+    startButton.addEventListener('click', function () {
+      let countdown = 3;
+      messageDiv.textContent = '';
+
+      const interval = setInterval(() => {
+        if (countdown > 0) {
+          messageDiv.textContent = `سوف يتم اختراقك بعد ${countdown} ثواني...`;
+          countdown--;
+        } else {
+          clearInterval(interval);
+          messageDiv.innerHTML = `تم اختراقك بنجاح! <span style="font-size: 50px;">&#128520;</span>`;
+          startButton.style.display = 'none';
+        }
+      }, 1000);
+
+      // Button animation
+      startButton.style.animation = 'shake 0.5s infinite';
+    });
+
+    // Add shake animation
+    const shakeAnimation = document.createElement('style');
+    shakeAnimation.innerHTML = `
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+      }
+    `;
+    document.head.appendChild(shakeAnimation);
+  </script>
+</body>
+</html>
